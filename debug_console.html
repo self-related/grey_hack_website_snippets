@@ -1,0 +1,171 @@
+<!-- 
+ 
+Usage:
+1. Copy snippet below to you website
+2. Use console in JS:
+
+const debugConsole = new DebugConsole();
+debugConsole.log("msg");   // print line
+debugConsole.error("err"); // print error
+
+-->
+
+
+<!-- debug console start ---------------- -->
+
+<div id="__debug_console">    
+    <div id="__debug_console_panel">
+        <button id="__debug_console_scroll_up_btn" class="__debug_console_panel__btn">&nbsp;up&nbsp;</button>
+        <button id="__debug_console_scroll_down_btn" class="__debug_console_panel__btn">&nbsp;dn&nbsp;</button>
+        <button id="__debug_console_log_btn" class="__debug_console_panel__btn">TEST</button>
+        <button id="__debug_console_error_btn" class="__debug_console_panel__btn">ERR</button>
+        <button id="__debug_console_clear_btn" class="__debug_console_panel__btn">CLEAR</button>
+        <button id="__debug_console_hide_btn" class="__debug_console_panel__btn">HIDE</button>
+    </div>
+    
+    <div id="__debug_console_body"></div>
+
+    <style>
+        #__debug_console {
+            position: relative;
+            color: white;
+            width: 100%;
+            height: 250px;
+            margin-top: 20px;
+        }
+
+
+        #__debug_console_panel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5%;
+            height: 100%;
+            margin-bottom: 5px;
+
+            background-color: #252525;
+        }
+        #__debug_console_panel > * {
+            margin-bottom: 7px;
+        }
+
+        #__debug_console_body {
+            position: absolute;
+            top: 0;
+            left: 5%;
+            width: 91%;
+            height: 96%;
+            padding: 2% 2%;
+            
+            overflow-y: scroll;
+            background-color: black;
+        }
+
+        .__debug_console_panel__btn {
+            height: 20px;
+            width: 80%;
+        }
+
+        .__debug_console_error {
+            color: red;
+        }
+
+        .__debug_console_line_count {
+            color: gray;
+            margin-right: 10px;
+        }
+
+        .__debug_console_hide {
+            display: none;
+        }
+
+    </style>
+    
+    <script>
+        /**@class*/
+        function DebugConsole() {
+            this.debugConsoleDiv = document.getElementById("__debug_console");
+            this.debugConsoleBody = document.getElementById("__debug_console_body");
+        }
+        
+        DebugConsole.prototype.lineCount = -1;
+
+        DebugConsole.prototype.log = function() {
+            if (!arguments.length) {
+                return;
+            }
+            
+            let msg = "";
+            
+            for (let i in arguments) {
+                msg = msg + arguments[i] + " ";
+            }
+            
+            this.debugConsoleBody.innerHTML = "<p>" + "<span class='__debug_console_line_count'>" + ++this.lineCount + ":</span>" + msg + "</p>" + this.debugConsoleBody.innerHTML;
+        };
+
+        DebugConsole.prototype.error = function() {
+            if (!arguments.length) {
+                return;
+            }
+            
+            let msg = "";
+            
+            for (let i in arguments) {
+                msg = msg + arguments[i] + " ";
+            }
+
+            this.debugConsoleBody.innerHTML = "<p class='__debug_console_error'>" + "<span class='__debug_console_line_count'>" + ++this.lineCount + ":</span>" + msg + "</p>" + this.debugConsoleBody.innerHTML;
+        };
+
+        DebugConsole.prototype.hide = function() {
+            this.debugConsoleBody.classList.toggle("__debug_console_hide");
+        };
+
+        DebugConsole.prototype.clear = function() {
+            this.lineCount = -1;
+            this.debugConsoleBody.innerHTML = "";
+        };
+
+        const debugConsole = new DebugConsole();
+
+
+        /* get panel buttons */
+        const debugScrollUpBtn = document.getElementById("__debug_console_scroll_up_btn");
+        const debugScrollDownBtn = document.getElementById("__debug_console_scroll_down_btn");
+
+        const debugLogBtn = document.getElementById("__debug_console_log_btn");
+        const debugErrorBtn = document.getElementById("__debug_console_error_btn");
+                
+        const debugClearBtn = document.getElementById("__debug_console_clear_btn");
+        const debugHideBtn = document.getElementById("__debug_console_hide_btn");
+
+
+        /* events for panel buttons */
+        debugScrollUpBtn.addEventListener("click", function() {
+                debugConsole.debugConsoleBody.scrollBy(0, -50);
+        });
+
+        debugScrollDownBtn.addEventListener("click", function() {
+            debugConsole.debugConsoleBody.scrollBy(0, 50);
+        });
+
+        debugClearBtn.addEventListener("click", function() {
+            debugConsole.clear();
+        });
+
+        debugLogBtn.addEventListener("click", function() {
+            debugConsole.log("test", "log");
+        });
+
+        debugErrorBtn.addEventListener("click", function() {
+            debugConsole.error("test", "error");
+        });
+
+        debugHideBtn.addEventListener("click", function() {
+            debugConsole.hide();
+        });
+    </script>
+</div>
+
+<!-- debug console end ---------------- -->
