@@ -100,6 +100,8 @@ console.error("err"); // print error
         function DebugConsole() {
             this.debugConsoleDiv = document.getElementById("__debug_console");
             this.debugConsoleBody = document.getElementById("__debug_console_body");
+            this.debugConsoleInput = document.getElementById("__debug_console_input");
+
         }
         
 		/**@static*/
@@ -138,6 +140,7 @@ console.error("err"); // print error
 		/**@method*/
         DebugConsole.prototype.hide = function() {
             this.debugConsoleBody.classList.toggle("__debug_console_hide");
+            this.debugConsoleInput.classList.toggle("__debug_console_hide");
         };
 
 		/**@method*/
