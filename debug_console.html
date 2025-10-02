@@ -151,6 +151,14 @@ console.error("err"); // print error
 
         var console = new DebugConsole();
 
+        /* handle console input */
+        console.debugConsoleInput.addEventListener("keydown", function(e) {
+            if (e.keyCode == 13) {
+				eval(e.currentTarget.value);
+			};
+        });
+        
+
         /* get panel buttons */
         const debugScrollUpBtn = document.getElementById("__debug_console_scroll_up_btn");
         const debugScrollDownBtn = document.getElementById("__debug_console_scroll_down_btn");
@@ -185,15 +193,6 @@ console.error("err"); // print error
 
         debugHideBtn.addEventListener("click", function() {
             console.hide();
-        });
-
-		
-		// get console input element
-		const debugConsoleInput = document.getElementById("__debug_console_input");
-		debugConsoleInput.addEventListener("keydown", function(e) {
-            if (e.keyCode == 13) {
-				eval(e.currentTarget.value);
-			};
         });
 		
     </script>
