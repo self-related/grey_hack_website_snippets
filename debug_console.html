@@ -4,9 +4,8 @@ Usage:
 1. Copy snippet below to you website
 2. Use console in JS:
 
-const debugConsole = new DebugConsole();
-debugConsole.log("msg");   // print line
-debugConsole.error("err"); // print error
+console.log("msg");   // print line
+console.error("err"); // print error
 
 -->
 
@@ -24,6 +23,7 @@ debugConsole.error("err"); // print error
     </div>
     
     <div id="__debug_console_body"></div>
+	<input type="text" id="__debug_console_input">
 
     <style>
         #__debug_console {
@@ -54,8 +54,10 @@ debugConsole.error("err"); // print error
             top: 0;
             left: 5%;
             width: 91%;
-            height: 96%;
+            height: 85%;
             padding: 2% 2%;
+			border: 1px solid white;
+			
             
             overflow-y: scroll;
             background-color: black;
@@ -79,6 +81,18 @@ debugConsole.error("err"); // print error
             display: none;
         }
 
+		#__debug_console_input {
+			position: absolute;
+			bottom: 0;
+			left: 5%;
+			width: calc(95% + 2px);
+			height: 30px;
+			border: 1px solid white;
+			background-color: black;
+			color: white;
+			
+		}
+
     </style>
     
     <script>
@@ -88,8 +102,10 @@ debugConsole.error("err"); // print error
             this.debugConsoleBody = document.getElementById("__debug_console_body");
         }
         
+		/**@static*/
         DebugConsole.prototype.lineCount = -1;
-
+		
+		/**@method*/
         DebugConsole.prototype.log = function() {
             if (!arguments.length) {
                 return;
@@ -103,7 +119,8 @@ debugConsole.error("err"); // print error
             
             this.debugConsoleBody.innerHTML = "<p>" + "<span class='__debug_console_line_count'>" + ++this.lineCount + ":</span>" + msg + "</p>" + this.debugConsoleBody.innerHTML;
         };
-
+		
+		/**@method*/
         DebugConsole.prototype.error = function() {
             if (!arguments.length) {
                 return;
@@ -118,17 +135,18 @@ debugConsole.error("err"); // print error
             this.debugConsoleBody.innerHTML = "<p class='__debug_console_error'>" + "<span class='__debug_console_line_count'>" + ++this.lineCount + ":</span>" + msg + "</p>" + this.debugConsoleBody.innerHTML;
         };
 
+		/**@method*/
         DebugConsole.prototype.hide = function() {
             this.debugConsoleBody.classList.toggle("__debug_console_hide");
         };
 
+		/**@method*/
         DebugConsole.prototype.clear = function() {
             this.lineCount = -1;
             this.debugConsoleBody.innerHTML = "";
         };
 
-        const debugConsole = new DebugConsole();
-
+        var console = new DebugConsole();
 
         /* get panel buttons */
         const debugScrollUpBtn = document.getElementById("__debug_console_scroll_up_btn");
@@ -143,29 +161,40 @@ debugConsole.error("err"); // print error
 
         /* events for panel buttons */
         debugScrollUpBtn.addEventListener("click", function() {
-                debugConsole.debugConsoleBody.scrollBy(0, -50);
+                console.debugConsoleBody.scrollBy(0, -50);
         });
 
         debugScrollDownBtn.addEventListener("click", function() {
-            debugConsole.debugConsoleBody.scrollBy(0, 50);
+            console.debugConsoleBody.scrollBy(0, 50);
         });
 
         debugClearBtn.addEventListener("click", function() {
-            debugConsole.clear();
+            console.clear();
         });
 
         debugLogBtn.addEventListener("click", function() {
-            debugConsole.log("test", "log");
+            console.log("test", "log");
         });
 
         debugErrorBtn.addEventListener("click", function() {
-            debugConsole.error("test", "error");
+            console.error("test", "error");
         });
 
         debugHideBtn.addEventListener("click", function() {
-            debugConsole.hide();
+            console.hide();
         });
+
+		
+		// get console input element
+		const debugConsoleInput = document.getElementById("__debug_console_input");
+		debugConsoleInput.addEventListener("keydown", function(e) {
+            if (e.keyCode == 13) {
+				eval(e.currentTarget.value);
+			};
+        });
+		
     </script>
 </div>
 
 <!-- debug console end ---------------- -->
+		
